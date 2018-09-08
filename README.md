@@ -5,6 +5,7 @@
 #### Dependences
 
 - vue2
-- vuex
 - vue-router
 - webpack4
+- bootstrap
+- vue-awesome
