@@ -2,18 +2,22 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
+function resolve(dir) {
+  return path.resolve(__dirname, "..", dir);
+}
+
 module.exports = {
   entry: {
     app: "./src/main.js"
   },
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "../dist")
+    path: resolve("dist")
   },
   resolve: {
     extensions: [".js", ".vue"],
     alias: {
-      "~": path.resolve(__dirname, "../src"),
+      "~": resolve("src"),
       vue$: "vue/dist/vue.esm.js"
     }
   },
@@ -26,11 +30,11 @@ module.exports = {
       {
         test: /\.js$/,
         loader: "babel-loader",
-        include: path.resolve(__dirname, "../src")
+        include: [resolve("src"), resolve("node_modules/vue-awesome")]
       },
       {
         test: /\.s?[ac]ss$/,
-        use: ["vue-style-loader", "css-loader"]
+        use: ["vue-style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
