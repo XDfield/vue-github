@@ -1,0 +1,36 @@
+{
+  "name": "Vue-Github",
+  "version": "1.0.0",
+  "description": "The Github base on vue.",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "webpack --config build/webpack.prod.js",
+    "start": "webpack-dev-server --config build/webpack.dev.js"
+  },
+  "keywords": [],
+  "author": "DoSun",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^7.1.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "vue-loader": "^15.4.1",
+    "vue-router": "^3.0.1",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7",
+    "webpack-merge": "^4.1.4"
+  },
+  "dependencies": {
+    "babel-preset-stage-2": "^6.24.1",
+    "file-loader": "^2.0.0",
+    "url-loader": "^1.1.1",
+    "vue": "^2.5.17",
+    "vuex": "^3.0.1"
+  }
+}
