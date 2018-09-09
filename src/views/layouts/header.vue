@@ -26,13 +26,17 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/brands/github-alt'
+import 'vue-awesome/icons/align-justify'
+import 'vue-awesome/icons/user'
+
 export default {
-  data() {
+  data () {
     return {
-      brand: "Vue-Github"
-    };
+      brand: 'Vue-Github'
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

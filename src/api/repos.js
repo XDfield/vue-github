@@ -1,3 +1,3 @@
-import fetch from "./fetch";
+import fetch from './fetch'
 
-export const getPublicRepos = () => fetch("/repositories");
+export const getPublicRepos = () => fetch('/repositories')

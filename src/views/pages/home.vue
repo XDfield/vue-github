@@ -21,27 +21,28 @@
 </template>
 
 <script>
-import { getPublicRepos } from "~/api/repos";
+import 'vue-awesome/icons/window-restore'
+import { getPublicRepos } from '@/api/repos'
 
 export default {
-  data() {
+  data () {
     return {
       repos: []
-    };
+    }
   },
-  created() {
-    this.showPublicRepos();
+  created () {
+    this.showPublicRepos()
   },
   methods: {
-    showPublicRepos() {
+    showPublicRepos () {
       getPublicRepos().then(resp => {
         if (resp.length > 1) {
-          this.repos = resp;
+          this.repos = resp
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

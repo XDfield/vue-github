@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import HeaderView from "./header";
-import ScrollTop from "./scrollTop";
+import HeaderView from './header'
+import ScrollTop from './scrollTop'
 
 export default {
   components: {
     HeaderView,
     ScrollTop
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

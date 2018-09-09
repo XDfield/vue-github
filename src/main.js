@@ -1,20 +1,21 @@
-import Vue from "vue";
+import Vue from 'vue'
 
-import router from "~/router";
+import router from '@/router'
 // bootstrap
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap/dist/js/bootstrap";
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap'
 // vue-awesome
-import "vue-awesome/icons";
-import Icon from "vue-awesome/components/Icon";
+// import "vue-awesome/icons";
+import Icon from 'vue-awesome/components/Icon'
 
-import App from "~/App";
-import "~/assets/styles/css/index.scss";
+import App from './App'
+import '@/assets/styles/css/index.scss'
 
-Vue.component("v-icon", Icon);
+Vue.component('v-icon', Icon)
 
+/* eslint-disable no-new */
 new Vue({
-  el: "#app",
+  el: '#app',
   router,
   render: h => h(App)
-});
+})

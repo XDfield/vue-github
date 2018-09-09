@@ -5,40 +5,42 @@
 </template>
 
 <script>
+import 'vue-awesome/icons/caret-up'
+
 export default {
   props: {
     step: {
-      //此数据是控制动画快慢的
+      // 此数据是控制动画快慢的
       type: Number,
       default: 100
     }
   },
-  data() {
+  data () {
     return {
       isActive: false
-    };
+    }
   },
-  created() {
-    let vm = this;
-    window.onscroll = function() {
-      if (document.body.scrollTop > 1000) {
-        vm.isActive = true;
+  created () {
+    let vm = this
+    window.onscroll = function () {
+      if (document.body.scrollTop > 500) {
+        vm.isActive = true
       } else {
-        vm.isActive = false;
+        vm.isActive = false
       }
-    };
+    }
   },
   methods: {
-    scrollTop(i) {
-      document.body.scrollTop -= i;
+    scrollTop (i) {
+      document.body.scrollTop -= i
       if (document.body.scrollTop > 0) {
-        var c = setTimeout(() => this.scrollTop(i), 16);
+        var c = setTimeout(() => this.scrollTop(i), 16)
       } else {
-        clearTimeout(c);
+        clearTimeout(c)
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -54,6 +56,18 @@ div {
   right: -55px;
   cursor: pointer;
   transition: all 0.3s ease-in;
+
+  &:hover {
+    background-color: #007bff;
+
+    /deep/ svg {
+      color: white;
+    }
+  }
+
+  /deep/ svg {
+    color: #181818;
+  }
 }
 .show {
   opacity: 1;

@@ -1,27 +1,27 @@
-import Vue from "vue";
-import Router from "vue-router";
+import Vue from 'vue'
+import Router from 'vue-router'
 
-import LayoutView from "~/views/layouts/layout";
-import HomeView from "~/views/pages/home";
+// import LayoutView from '@/views/layouts/layout'
+// import HomeView from '@/views/pages/home'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: "/",
-      component: LayoutView,
+      path: '/',
+      component: resolve => require(['@/views/layouts/layout'], resolve),
       children: [
         {
-          path: "",
-          redirect: "home"
+          path: '',
+          redirect: 'home'
         },
         {
-          path: "/home",
-          name: "home",
-          component: HomeView
+          path: '/home',
+          name: 'home',
+          component: resolve => require(['@/views/pages/home'], resolve)
         }
       ]
     }
   ]
-});
+})
