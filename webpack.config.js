@@ -1,5 +1,7 @@
 const path = require('path')
+const merge = require('webpack-merge')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
@@ -20,11 +22,11 @@ module.exports = env => {
     mode: isProduction ? 'production' : 'development',
     output: {
       filename: isProduction
-        ? 'static/js/[name].bundle.js'
+        ? 'static/js/[name].[chunkhash].js'
         : '[name].bundle.js',
       path: resolve('dist'),
       chunkFilename: isProduction
-        ? 'static/js/[id].bundle.js'
+        ? 'static/js/[name].[chunkhash].js'
         : '[id].bundle.js',
       publicPath: '/'
     },
@@ -32,6 +34,10 @@ module.exports = env => {
       extensions: ['.js', '.vue'],
       alias: {
         '@': resolve('src'),
+        bootstrap: resolve('node_modules/bootstrap'),
+        'vue-router': resolve('node_modules/vue-router'),
+        'vue-awesome': resolve('node_modules/vue-awesome'),
+        vuex: resolve('node_modules/vuex'),
         vue$: 'vue/dist/vue.esm.js'
       }
     },
@@ -42,18 +48,35 @@ module.exports = env => {
           loader: 'eslint-loader',
           enforce: 'pre',
           include: resolve('src'),
+          exclude: /node_modules/,
           options: {
             formatter: require('eslint-friendly-formatter')
           }
         },
         {
           test: /\.vue$/,
-          loader: 'vue-loader'
+          loader: 'vue-loader',
+          include: [resolve('src'), resolve('node_modules/vue-awesome')],
+          options: {
+            cacheDirectory: resolve('./cache-loader'),
+            cacheIdentifier: 'cache-loader:{version} {precess.env.NODE_ENV}'
+          }
         },
         {
           test: /\.js$/,
-          loader: 'babel-loader',
-          include: [resolve('src'), resolve('node_modules/vue-awesome')]
+          use: isProduction
+            ? [
+              {
+                loader: 'cache-loader',
+                options: {
+                  cacheDirectory: resolve('cache-loader')
+                }
+              },
+              'babel-loader'
+            ]
+            : 'babel-loader',
+          exclude: /node_modules/,
+          include: resolve('src')
         },
         {
           test: /\.s?[ac]ss$/,
@@ -91,64 +114,78 @@ module.exports = env => {
         filename: 'index.html',
         template: 'index.html',
         favicon: 'src/assets/styles/img/favicon.png',
-        inject: true
+        inject: true,
+        chunksSortMode: 'dependency'
       }),
       new VueLoaderPlugin()
-    ],
-    node: {
-      // console: 'empty',
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty'
-    }
+    ]
   }
 
   if (isProduction) {
-    config.optimization = {
-      minimize: true,
-      splitChunks: {
-        cacheGroups: {
-          common: {
-            chunks: 'initial',
-            name: 'common',
-            minChunks: 2,
-            minSize: 0
-          },
-          vendor: {
-            test: /node_modules/,
-            chunks: 'initial',
-            name: 'vendor',
-            priority: 10
+    config = merge(config, {
+      optimization: {
+        minimizer: [
+          new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            sourceMap: false
+          }),
+          new OptimizeCssAssetsPlugin({})
+        ],
+        splitChunks: {
+          cacheGroups: {
+            common: {
+              chunks: 'initial',
+              name: 'common',
+              minChunks: 2,
+              minSize: 0
+            },
+            vendor: {
+              test: /node_modules/,
+              chunks: 'initial',
+              name: 'vendor',
+              priority: 10
+            },
+            styles: {
+              name: 'styles',
+              test: /\.css$/,
+              chunks: 'all',
+              enforce: true
+            }
           }
         }
-      }
-    }
-
-    config.plugins = config.plugins.concat([
-      new CleanWebpackPlugin(['dist'], {
-        verbose: true
-      }),
-      new MiniCssExtractPlugin({
-        filename: 'static/css/[name].css',
-        chunkFilename: 'static/css/[name].chunk.css'
-      }),
-      new OptimizeCssAssetsPlugin()
-    ])
+      },
+      plugins: [
+        new CleanWebpackPlugin(['dist'], {
+          verbose: true
+        }),
+        new MiniCssExtractPlugin({
+          filename: 'static/css/[name].[hash].css',
+          chunkFilename: 'static/css/[name].[hash].css'
+        }),
+        new webpack.HashedModuleIdsPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin()
+      ]
+    })
   } else {
-    config.devServer = {
-      host: 'localhost',
-      port: '8080',
-      hot: true,
-      inline: true,
-      contentBase: './dist'
-    }
-
-    config.plugins = config.plugins.concat([
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new FriendlyErrorsPlugin()
-    ])
+    config = merge(config, {
+      devServer: {
+        host: 'localhost',
+        port: '8080',
+        hot: true,
+        inline: true,
+        // publicPath: 'static',
+        contentBase: './dist',
+        compress: true
+      },
+      devtool: 'eval-source-map',
+      plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.NamedModulesPlugin(),
+        new FriendlyErrorsPlugin()
+      ]
+    })
   }
 
   return config
