@@ -1,6 +1,10 @@
 <template>
-  <div @click="scrollTop(step)" :class="{show: isActive}">
-    <v-icon name="caret-up" scale="3"></v-icon>
+  <div 
+    :class="{show: isActive}" 
+    @click="scrollTop(step)">
+    <v-icon 
+      name="caret-up" 
+      scale="3"/>
   </div>
 </template>
 
@@ -23,7 +27,8 @@ export default {
   created () {
     let vm = this
     window.onscroll = function () {
-      if (document.body.scrollTop > 500) {
+      const top = document.documentElement.scrollTop || document.body.scrollTop
+      if (top > 500) {
         vm.isActive = true
       } else {
         vm.isActive = false
@@ -32,8 +37,9 @@ export default {
   },
   methods: {
     scrollTop (i) {
-      document.body.scrollTop -= i
-      if (document.body.scrollTop > 0) {
+      document.body.scrollTop = document.documentElement.scrollTop -= i
+      const top = document.documentElement.scrollTop || document.body.scrollTop
+      if (top > 0) {
         var c = setTimeout(() => this.scrollTop(i), 16)
       } else {
         clearTimeout(c)
