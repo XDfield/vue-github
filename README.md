@@ -1,21 +1,22 @@
 ### Vue-Github
 
-个人学习项目, 基于 vue 的 github 网站
+个人学习项目, 基于 nuxt 的 github 网站
 
-#### Start
+#### Usage
 
 ```bash
-npm start
+# 运行
+npm run dev
+# 部署到Github Page
+npm run deploy
 ```
 
-screenshot:
+#### Github Page
 
-![主页](https://raw.githubusercontent.com/XDfield/vue-github/master/screenshot/screenshot.png)
+[在线浏览](https://xdfield.github.io/vue-github/)
 
 #### Dependences
 
-- vue2
-- vue-router
-- webpack4
+- nuxt
 - bootstrap
 - vue-awesome

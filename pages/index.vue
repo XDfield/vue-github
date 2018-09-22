@@ -1,12 +1,20 @@
 <template>
   <div class="my-home">
     <div class="my-home-title">
-      <h2><v-icon name="window-restore" scale="2"></v-icon> 最近项目</h2>
+      <h2><v-icon 
+        name="window-restore" 
+        scale="2"/> 最近项目</h2>
     </div>
     <div class="card-columns">
-      <div class="card mb-3" v-for="repo in repos" :key="repo.id">
+      <div 
+        v-for="repo in repos" 
+        :key="repo.id" 
+        class="card mb-3">
         <div class="card-header">
-          <img :src="repo.owner.avatar_url" :alt="repo.owner.login" class="my-img-thumbnail">
+          <img 
+            :src="repo.owner.avatar_url" 
+            :alt="repo.owner.login" 
+            class="my-img-thumbnail">
           <div class="title-and-username">
             <h5>{{ repo.name }}</h5>
             <p>{{ repo.owner.login }}</p>
@@ -21,27 +29,24 @@
 </template>
 
 <script>
-import { getPublicRepos } from "~/api/repos";
+import 'vue-awesome/icons/window-restore'
 
 export default {
-  data() {
+  data () {
     return {
       repos: []
-    };
+    }
   },
-  created() {
-    this.showPublicRepos();
+  created () {
+    this.showPublicRepos()
   },
   methods: {
-    showPublicRepos() {
-      getPublicRepos().then(resp => {
-        if (resp.length > 1) {
-          this.repos = resp;
-        }
-      });
+    async showPublicRepos () {
+      const repos = await this.$axios.$get('/repositories')
+      this.repos = repos
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -1,23 +1,23 @@
 <template>
   <div>
-    <header-view></header-view>
+    <header-view/>
     <div class="my-page-wrapper">
-      <router-view></router-view>
+      <nuxt/>
     </div>
-    <scroll-top></scroll-top>
+    <scroll-top/>
   </div>
 </template>
 
 <script>
-import HeaderView from "./header";
-import ScrollTop from "./scrollTop";
+import HeaderView from '~/components/layouts/header'
+import ScrollTop from '~/components/layouts/scrollTop'
 
 export default {
   components: {
     HeaderView,
     ScrollTop
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
